@@ -24,11 +24,18 @@ namespace WindowsMqttPOS
         {
             try
             {
-                SetText("*** Received Message");
-                SetText("*** Topic: " + e.Topic);
+                //SetText("*** Received Message");
+                //SetText("*** Topic: " + e.Topic);
                 SetText("*** Message: " + Encoding.UTF8.GetString(e.Message));
-                SetText("");
-                MessageBox.Show("*** Payment Success");
+                //SetText("");
+                if (e.Topic.Equals("/Payment/Status/" + txtEdcId.Text))
+                {
+                    listBox1.Items.Add("Payment Success.");
+                    pbPayment.Visible = false;
+                    btnPayment.Enabled = true;
+                }
+                if (e.Topic.Equals("/Pairing/" + txtPosId.Text))
+                    txtToken.Text = Encoding.UTF8.GetString(e.Message);
             }
             catch (Exception ex)
             {
@@ -81,14 +88,18 @@ namespace WindowsMqttPOS
         private void Form1_Load(object sender, EventArgs e)
         {
             try {
+                txtPosId.Text = "POS01";
+                txtEdcId.Text = "EDC01";
                 string BrokerAddress = "mqtt.eclipse.org";
                 client = new MqttClient(BrokerAddress);
                 // use a unique id as client id, each time we start the application
                 clientId = Guid.NewGuid().ToString();
                 client.Connect(clientId);
-                listBox1.Items.Add("* Client connected");
-                //subcribe("/ReqPOS/");
-                client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
+                if (client.IsConnected) {
+                    listBox1.Items.Add("Client Connected");
+                    client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
+                    //subcribe("/Pairing/" + txtPosId.Text);
+                }
             } catch(Exception ex) {
                 MessageBox.Show(ex.ToString());
             }
@@ -131,17 +142,22 @@ namespace WindowsMqttPOS
                     paymentMethod = "Ewallet-LinkAja";
                 }
             }
-            subcribe("/ReqPOS/");
-            publish("/PubPOS/", paymentMethod+" "+txtAmount.Text);
+            subcribe("/Payment/Status/"+ txtEdcId.Text);
+            //publish("/Payment/", paymentMethod+" "+txtAmount.Text);
             //MessageBox.Show("Ammount: "+txtAmount.Text+" Method Payment: "+paymentMethod);
             try
             {
                 btnPayment.Enabled = false;
                 pbPayment.Visible = true;
                 pbPayment.Style = ProgressBarStyle.Marquee;
-                PaymentResponse resp = await PostPaymentAsync("1",paymentMethod,"112",Int32.Parse(txtAmount.Text));
-                MessageBox.Show(resp.status);
-                pbPayment.Visible = false;
+                PaymentResponse resp = await PostPaymentAsync(txtToken.Text, txtPosId.Text,paymentMethod,txtTrxNo.Text,Int32.Parse(txtAmount.Text));
+                listBox1.Items.Add("Request Payment from "+ txtEdcId.Text);
+                listBox1.Items.Add("Waiting Payment...");
+                Timer MyTimer = new Timer();
+                MyTimer.Interval = (1 * 60 * 1000); // 45 mins
+                MyTimer.Tick += new EventHandler(OnTimedEvent);
+                MyTimer.Start();
+
             }
             catch (Exception es)
             {
@@ -150,7 +166,15 @@ namespace WindowsMqttPOS
             return;
         }
 
-        private async Task<PaymentResponse> PostPaymentAsync(string posId, 
+        private void OnTimedEvent(object sender, EventArgs e)
+        {
+            listBox1.Items.Add("Payment Timeout");
+            btnPayment.Enabled = true;
+            pbPayment.Visible = false;
+        }
+
+        private async Task<PaymentResponse> PostPaymentAsync(string token,
+            string posId, 
             string trMethod, 
             string trNo, 
             int trAmount)
@@ -162,7 +186,7 @@ namespace WindowsMqttPOS
                 trNo = trNo,
                 trAmount = trAmount
             };
-            PaymentResponse response = await CreatePayment(req);
+            PaymentResponse response = await CreatePayment(token, req);
             return response;
             
         }
@@ -180,6 +204,29 @@ namespace WindowsMqttPOS
         private void RbCreditCard_CheckedChanged(object sender, EventArgs e)
         {
             gbEwallet.Visible = false;
+        }
+
+        private void BtnClearLog_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        }
+
+        private void ToolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void TxtToken_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var user = ApiPayment.TokenExtractor(txtToken.Text);
+                txtEdcId.Text = user;
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.btnPayment = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
@@ -42,6 +43,16 @@
             this.rbGopay = new System.Windows.Forms.RadioButton();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.pbPayment = new System.Windows.Forms.ProgressBar();
+            this.btnClearLog = new System.Windows.Forms.Button();
+            this.txtPosId = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtTrxNo = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtEdcId = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.txtToken = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.gbPaymentMethod.SuspendLayout();
             this.gbEwallet.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(72, 43);
+            this.label1.Location = new System.Drawing.Point(72, 104);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 17);
             this.label1.TabIndex = 0;
@@ -57,7 +68,7 @@
             // 
             // btnPayment
             // 
-            this.btnPayment.Location = new System.Drawing.Point(264, 237);
+            this.btnPayment.Location = new System.Drawing.Point(264, 302);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(75, 33);
             this.btnPayment.TabIndex = 1;
@@ -67,7 +78,7 @@
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(139, 40);
+            this.txtAmount.Location = new System.Drawing.Point(139, 99);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(200, 22);
             this.txtAmount.TabIndex = 2;
@@ -77,7 +88,7 @@
             this.gbPaymentMethod.Controls.Add(this.rbEwallet);
             this.gbPaymentMethod.Controls.Add(this.rbCreditCard);
             this.gbPaymentMethod.Controls.Add(this.rbCreditDebet);
-            this.gbPaymentMethod.Location = new System.Drawing.Point(139, 90);
+            this.gbPaymentMethod.Location = new System.Drawing.Point(139, 140);
             this.gbPaymentMethod.Name = "gbPaymentMethod";
             this.gbPaymentMethod.Size = new System.Drawing.Size(200, 107);
             this.gbPaymentMethod.TabIndex = 3;
@@ -126,7 +137,7 @@
             this.gbEwallet.Controls.Add(this.rbDana);
             this.gbEwallet.Controls.Add(this.rbOvo);
             this.gbEwallet.Controls.Add(this.rbGopay);
-            this.gbEwallet.Location = new System.Drawing.Point(376, 90);
+            this.gbEwallet.Location = new System.Drawing.Point(357, 140);
             this.gbEwallet.Name = "gbEwallet";
             this.gbEwallet.Size = new System.Drawing.Size(200, 132);
             this.gbEwallet.TabIndex = 4;
@@ -183,24 +194,113 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(12, 286);
+            this.listBox1.Location = new System.Drawing.Point(12, 397);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(638, 148);
             this.listBox1.TabIndex = 5;
             // 
             // pbPayment
             // 
-            this.pbPayment.Location = new System.Drawing.Point(345, 247);
+            this.pbPayment.Location = new System.Drawing.Point(345, 312);
             this.pbPayment.Name = "pbPayment";
             this.pbPayment.Size = new System.Drawing.Size(100, 23);
             this.pbPayment.TabIndex = 6;
             this.pbPayment.Visible = false;
             // 
+            // btnClearLog
+            // 
+            this.btnClearLog.Location = new System.Drawing.Point(12, 358);
+            this.btnClearLog.Name = "btnClearLog";
+            this.btnClearLog.Size = new System.Drawing.Size(75, 33);
+            this.btnClearLog.TabIndex = 7;
+            this.btnClearLog.Text = "Clear";
+            this.btnClearLog.UseVisualStyleBackColor = true;
+            this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
+            // 
+            // txtPosId
+            // 
+            this.txtPosId.Location = new System.Drawing.Point(139, 43);
+            this.txtPosId.Name = "txtPosId";
+            this.txtPosId.Size = new System.Drawing.Size(200, 22);
+            this.txtPosId.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(74, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(54, 17);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "POS ID";
+            // 
+            // txtTrxNo
+            // 
+            this.txtTrxNo.Location = new System.Drawing.Point(139, 71);
+            this.txtTrxNo.Name = "txtTrxNo";
+            this.txtTrxNo.Size = new System.Drawing.Size(200, 22);
+            this.txtTrxNo.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(74, 71);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 17);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Trx No.";
+            // 
+            // txtEdcId
+            // 
+            this.txtEdcId.Location = new System.Drawing.Point(139, 15);
+            this.txtEdcId.Name = "txtEdcId";
+            this.txtEdcId.Size = new System.Drawing.Size(100, 22);
+            this.txtEdcId.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(77, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 17);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "EDC ID";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.ToolTip1_Popup);
+            // 
+            // txtToken
+            // 
+            this.txtToken.Location = new System.Drawing.Point(393, 43);
+            this.txtToken.Multiline = true;
+            this.txtToken.Name = "txtToken";
+            this.txtToken.Size = new System.Drawing.Size(244, 78);
+            this.txtToken.TabIndex = 14;
+            this.txtToken.TextChanged += new System.EventHandler(this.TxtToken_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(396, 18);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 17);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Token";
+            // 
             // formPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 450);
+            this.ClientSize = new System.Drawing.Size(662, 557);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtToken);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtEdcId);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtTrxNo);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtPosId);
+            this.Controls.Add(this.btnClearLog);
             this.Controls.Add(this.pbPayment);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.gbEwallet);
@@ -236,6 +336,16 @@
         private System.Windows.Forms.RadioButton rbGopay;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ProgressBar pbPayment;
+        private System.Windows.Forms.Button btnClearLog;
+        private System.Windows.Forms.TextBox txtPosId;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtTrxNo;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtEdcId;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TextBox txtToken;
+        private System.Windows.Forms.Label label5;
     }
 }
 

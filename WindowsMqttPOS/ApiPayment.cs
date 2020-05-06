@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,7 +12,7 @@ namespace WindowsMqttPOS
 {
     class ApiPayment
     {
-        public static async Task<PaymentResponse> CreatePayment(PaymentRequest req)
+        public static async Task<PaymentResponse> CreatePayment(string token, PaymentRequest req)
         {
             HttpClient client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8081/api/v1/payment/publish");
@@ -19,7 +20,7 @@ namespace WindowsMqttPOS
             PaymentResponse payment = null;
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             //client.BaseAddress = new Uri("http://localhost:8081");
             //client.DefaultRequestHeaders.Accept.Clear();
@@ -31,6 +32,14 @@ namespace WindowsMqttPOS
               payment = await response.Content.ReadAsAsync<PaymentResponse>();
            }
            return payment;
+        }
+
+        public static string TokenExtractor(string jwt)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(jwt);
+            var user = token.Claims.First(claim => claim.Type == "user_name").Value;
+            return user;
         }
 
         public class PaymentRequest
@@ -47,6 +56,13 @@ namespace WindowsMqttPOS
             public string status { get; set; }
             public string message { get; set; }
             public object data { get; set; }
+        }
+
+        public class JwtToken
+        {
+            public long exp { get; set; }
+            public string user_name { get; set; }
+            public object authorities { get; set; }
         }
     }
 }
