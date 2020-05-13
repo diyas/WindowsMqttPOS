@@ -15,14 +15,14 @@ namespace WindowsMqttPOS
         public static async Task<PaymentResponse> CreatePayment(string token, PaymentRequest req)
         {
             HttpClient client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8081/api/v1/payment/publish");
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8080/push_notification/api/v1/payment/publish");
             var json = new JavaScriptSerializer().Serialize(req);
             PaymentResponse payment = null;
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            //client.BaseAddress = new Uri("http://localhost:8081");
+            //client.BaseAddress = new Uri("http://localhost:8080");
             //client.DefaultRequestHeaders.Accept.Clear();
             //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/payment/publish", req);

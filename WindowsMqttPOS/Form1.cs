@@ -15,6 +15,7 @@ namespace WindowsMqttPOS
         MqttClient client;
         string clientId;
         delegate void SetTextCallback(string text);
+        Timer MyTimer;
         public formPayment()
         {
             InitializeComponent();
@@ -33,6 +34,8 @@ namespace WindowsMqttPOS
                     listBox1.Items.Add("Payment Success.");
                     pbPayment.Visible = false;
                     btnPayment.Enabled = true;
+                    MyTimer.Stop();
+                    ClearForm();
                 }
                 if (e.Topic.Equals("/Pairing/" + txtPosId.Text))
                     txtToken.Text = Encoding.UTF8.GetString(e.Message);
@@ -153,7 +156,7 @@ namespace WindowsMqttPOS
                 PaymentResponse resp = await PostPaymentAsync(txtToken.Text, txtPosId.Text,paymentMethod,txtTrxNo.Text,Int32.Parse(txtAmount.Text));
                 listBox1.Items.Add("Request Payment from "+ txtEdcId.Text);
                 listBox1.Items.Add("Waiting Payment...");
-                Timer MyTimer = new Timer();
+                MyTimer = new Timer();
                 MyTimer.Interval = (1 * 60 * 1000); // 45 mins
                 MyTimer.Tick += new EventHandler(OnTimedEvent);
                 MyTimer.Start();
@@ -171,6 +174,13 @@ namespace WindowsMqttPOS
             listBox1.Items.Add("Payment Timeout");
             btnPayment.Enabled = true;
             pbPayment.Visible = false;
+        }
+
+        private void ClearForm()
+        {
+            txtAmount.Text = "";
+            txtTrxNo.Text = "";
+            rbEwallet.Checked = false;
         }
 
         private async Task<PaymentResponse> PostPaymentAsync(string token,
