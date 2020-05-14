@@ -1,6 +1,6 @@
 ﻿namespace WindowsMqttPOS
 {
-    partial class formPayment
+    partial class FormPayment
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.btnPayment = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
@@ -50,9 +49,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtEdcId = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.txtToken = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.btnCheckDir = new System.Windows.Forms.Button();
+            this.btnGenerateToken = new System.Windows.Forms.Button();
             this.gbPaymentMethod.SuspendLayout();
             this.gbEwallet.SuspendLayout();
             this.SuspendLayout();
@@ -60,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(72, 104);
+            this.label1.Location = new System.Drawing.Point(12, 95);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 17);
             this.label1.TabIndex = 0;
@@ -68,7 +68,7 @@
             // 
             // btnPayment
             // 
-            this.btnPayment.Location = new System.Drawing.Point(264, 302);
+            this.btnPayment.Location = new System.Drawing.Point(205, 302);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(75, 33);
             this.btnPayment.TabIndex = 1;
@@ -78,7 +78,7 @@
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(139, 99);
+            this.txtAmount.Location = new System.Drawing.Point(80, 93);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(200, 22);
             this.txtAmount.TabIndex = 2;
@@ -88,7 +88,7 @@
             this.gbPaymentMethod.Controls.Add(this.rbEwallet);
             this.gbPaymentMethod.Controls.Add(this.rbCreditCard);
             this.gbPaymentMethod.Controls.Add(this.rbCreditDebet);
-            this.gbPaymentMethod.Location = new System.Drawing.Point(139, 140);
+            this.gbPaymentMethod.Location = new System.Drawing.Point(80, 129);
             this.gbPaymentMethod.Name = "gbPaymentMethod";
             this.gbPaymentMethod.Size = new System.Drawing.Size(200, 107);
             this.gbPaymentMethod.TabIndex = 3;
@@ -137,7 +137,7 @@
             this.gbEwallet.Controls.Add(this.rbDana);
             this.gbEwallet.Controls.Add(this.rbOvo);
             this.gbEwallet.Controls.Add(this.rbGopay);
-            this.gbEwallet.Location = new System.Drawing.Point(357, 140);
+            this.gbEwallet.Location = new System.Drawing.Point(302, 138);
             this.gbEwallet.Name = "gbEwallet";
             this.gbEwallet.Size = new System.Drawing.Size(200, 132);
             this.gbEwallet.TabIndex = 4;
@@ -196,14 +196,14 @@
             this.listBox1.ItemHeight = 16;
             this.listBox1.Location = new System.Drawing.Point(12, 397);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(638, 148);
+            this.listBox1.Size = new System.Drawing.Size(695, 148);
             this.listBox1.TabIndex = 5;
             // 
             // pbPayment
             // 
-            this.pbPayment.Location = new System.Drawing.Point(345, 312);
+            this.pbPayment.Location = new System.Drawing.Point(286, 312);
             this.pbPayment.Name = "pbPayment";
-            this.pbPayment.Size = new System.Drawing.Size(100, 23);
+            this.pbPayment.Size = new System.Drawing.Size(420, 23);
             this.pbPayment.TabIndex = 6;
             this.pbPayment.Visible = false;
             // 
@@ -219,15 +219,16 @@
             // 
             // txtPosId
             // 
-            this.txtPosId.Location = new System.Drawing.Point(139, 43);
+            this.txtPosId.Enabled = false;
+            this.txtPosId.Location = new System.Drawing.Point(80, 37);
             this.txtPosId.Name = "txtPosId";
-            this.txtPosId.Size = new System.Drawing.Size(200, 22);
+            this.txtPosId.Size = new System.Drawing.Size(100, 22);
             this.txtPosId.TabIndex = 8;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(74, 43);
+            this.label2.Location = new System.Drawing.Point(12, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 17);
             this.label2.TabIndex = 9;
@@ -235,7 +236,7 @@
             // 
             // txtTrxNo
             // 
-            this.txtTrxNo.Location = new System.Drawing.Point(139, 71);
+            this.txtTrxNo.Location = new System.Drawing.Point(80, 65);
             this.txtTrxNo.Name = "txtTrxNo";
             this.txtTrxNo.Size = new System.Drawing.Size(200, 22);
             this.txtTrxNo.TabIndex = 10;
@@ -243,7 +244,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(74, 71);
+            this.label3.Location = new System.Drawing.Point(12, 67);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 17);
             this.label3.TabIndex = 11;
@@ -251,7 +252,8 @@
             // 
             // txtEdcId
             // 
-            this.txtEdcId.Location = new System.Drawing.Point(139, 15);
+            this.txtEdcId.Enabled = false;
+            this.txtEdcId.Location = new System.Drawing.Point(80, 9);
             this.txtEdcId.Name = "txtEdcId";
             this.txtEdcId.Size = new System.Drawing.Size(100, 22);
             this.txtEdcId.TabIndex = 12;
@@ -259,39 +261,58 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(77, 13);
+            this.label4.Location = new System.Drawing.Point(12, 9);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 17);
+            this.label4.Size = new System.Drawing.Size(49, 17);
             this.label4.TabIndex = 13;
-            this.label4.Text = "EDC ID";
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.ToolTip1_Popup);
+            this.label4.Text = "Edc ID";
             // 
             // txtToken
             // 
-            this.txtToken.Location = new System.Drawing.Point(393, 43);
+            this.txtToken.Location = new System.Drawing.Point(302, 29);
             this.txtToken.Multiline = true;
             this.txtToken.Name = "txtToken";
-            this.txtToken.Size = new System.Drawing.Size(244, 78);
+            this.txtToken.Size = new System.Drawing.Size(305, 86);
             this.txtToken.TabIndex = 14;
             this.txtToken.TextChanged += new System.EventHandler(this.TxtToken_TextChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(396, 18);
+            this.label5.Location = new System.Drawing.Point(299, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 17);
             this.label5.TabIndex = 15;
             this.label5.Text = "Token";
             // 
-            // formPayment
+            // btnCheckDir
+            // 
+            this.btnCheckDir.Location = new System.Drawing.Point(93, 358);
+            this.btnCheckDir.Name = "btnCheckDir";
+            this.btnCheckDir.Size = new System.Drawing.Size(135, 33);
+            this.btnCheckDir.TabIndex = 16;
+            this.btnCheckDir.Text = "Check Directory";
+            this.btnCheckDir.UseVisualStyleBackColor = true;
+            this.btnCheckDir.Visible = false;
+            this.btnCheckDir.Click += new System.EventHandler(this.BtnCheckDir_Click);
+            // 
+            // btnGenerateToken
+            // 
+            this.btnGenerateToken.Location = new System.Drawing.Point(613, 29);
+            this.btnGenerateToken.Name = "btnGenerateToken";
+            this.btnGenerateToken.Size = new System.Drawing.Size(94, 50);
+            this.btnGenerateToken.TabIndex = 17;
+            this.btnGenerateToken.Text = "Generate Token";
+            this.btnGenerateToken.UseVisualStyleBackColor = true;
+            this.btnGenerateToken.Click += new System.EventHandler(this.BtnGenerateToken_Click);
+            // 
+            // FormPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 557);
+            this.ClientSize = new System.Drawing.Size(718, 557);
+            this.Controls.Add(this.btnGenerateToken);
+            this.Controls.Add(this.btnCheckDir);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtToken);
             this.Controls.Add(this.label4);
@@ -308,7 +329,7 @@
             this.Controls.Add(this.txtAmount);
             this.Controls.Add(this.btnPayment);
             this.Controls.Add(this.label1);
-            this.Name = "formPayment";
+            this.Name = "FormPayment";
             this.Text = "POS Payment";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.gbPaymentMethod.ResumeLayout(false);
@@ -343,9 +364,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtEdcId;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TextBox txtToken;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnCheckDir;
+        private System.Windows.Forms.Button btnGenerateToken;
     }
 }
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,15 +13,17 @@ namespace WindowsMqttPOS
 {
 
     
-    public partial class formPayment : Form
+    public partial class FormPayment : Form
     {
         MqttClient client;
         string clientId;
         delegate void SetTextCallback(string text);
         Timer MyTimer;
-        public formPayment()
+        JsonFileCrud jsonFile;
+        public FormPayment()
         {
             InitializeComponent();
+
         }
 
         private void EventPublished(Object sender, MqttMsgPublishEventArgs e)
@@ -91,8 +96,9 @@ namespace WindowsMqttPOS
         private void Form1_Load(object sender, EventArgs e)
         {
             try {
-                txtPosId.Text = "POS01";
-                txtEdcId.Text = "EDC01";
+                txtTrxNo.Text = Guid.NewGuid().ToString();
+                jsonFile = new JsonFileCrud();
+                txtPosId.Text = jsonFile.ReadJson("client").GetValue("deviceId").ToString(); ;
                 string BrokerAddress = "mqtt.eclipse.org";
                 client = new MqttClient(BrokerAddress);
                 // use a unique id as client id, each time we start the application
@@ -181,6 +187,7 @@ namespace WindowsMqttPOS
             txtAmount.Text = "";
             txtTrxNo.Text = "";
             rbEwallet.Checked = false;
+            gbEwallet.Visible = false;
         }
 
         private async Task<PaymentResponse> PostPaymentAsync(string token,
@@ -199,6 +206,18 @@ namespace WindowsMqttPOS
             PaymentResponse response = await CreatePayment(token, req);
             return response;
             
+        }
+
+        private async Task<PaymentResponse> PostTokenAsync(string username, string password)
+        {
+            TokenRequest req = new TokenRequest
+            {
+                username = username,
+                password = password
+            };
+            PaymentResponse response = await GenerateToken(req);
+            return response;
+
         }
 
         private void GbEwallet_Enter(object sender, EventArgs e)
@@ -236,6 +255,40 @@ namespace WindowsMqttPOS
             {
                 MessageBox.Show(ex.Message);
             }
+            
+        }
+
+        private void BtnCheckDir_Click(object sender, EventArgs e)
+        {
+            string tmpPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\user.json";
+
+            JsonFileCrud jsonFileCrud = new JsonFileCrud();
+            //JObject json = jsonFileCrud.ReadUser();
+
+            //string fileExtension = Path.GetExtension(tmpPath);
+            //string filename = Path.GetFileName(tmpPath);
+            //string filenameWithoutExtension = Path.GetFileNameWithoutExtension(tmpPath);
+            //string rootPath = Path.GetPathRoot(tmpPath);
+            //string directory = Path.GetDirectoryName(Application.ExecutablePath);
+            //string fullPath = Path.GetFullPath(tmpPath);
+
+            //MessageBox.Show(json.ToString());
+        }
+
+        private async void BtnGenerateToken_Click(object sender, EventArgs e)
+        {
+            string username = jsonFile.ReadJson("login").GetValue("username").ToString();
+            string password = jsonFile.ReadJson("login").GetValue("password").ToString();
+            PaymentResponse resp = await PostTokenAsync(username, password);
+            var jsonObj = JObject.Parse(resp.data.ToString());
+            var token = jsonObj.GetValue("access_token").ToString();
+            txtToken.Text = token;
+            //MessageBox.Show(resp.data.ToString());
+
+        }
+
+        private void BtnConfig_Click(object sender, EventArgs e)
+        {
             
         }
     }

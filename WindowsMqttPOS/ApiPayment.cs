@@ -12,10 +12,36 @@ namespace WindowsMqttPOS
 {
     class ApiPayment
     {
+        
+
+        private static string GetApiURL(string method)
+        {
+            JsonFileCrud jsonFile = new JsonFileCrud();
+            string baseUrl = jsonFile.ReadJson("resource").GetValue("baseUrl").ToString();
+            string path = jsonFile.ReadJson("resource").GetValue(method).ToString();
+            return baseUrl + path;
+        }
+
+        public static async Task<PaymentResponse> GenerateToken(TokenRequest req)
+        {
+            HttpClient client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, GetApiURL("login"));
+            var json = new JavaScriptSerializer().Serialize(req);
+            PaymentResponse payment = null;
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                payment = await response.Content.ReadAsAsync<PaymentResponse>();
+            }
+            return payment;
+        }
         public static async Task<PaymentResponse> CreatePayment(string token, PaymentRequest req)
         {
             HttpClient client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8080/push_notification/api/v1/payment/publish");
+            var request = new HttpRequestMessage(HttpMethod.Post, GetApiURL("payment"));
             var json = new JavaScriptSerializer().Serialize(req);
             PaymentResponse payment = null;
             request.Headers.Accept.Clear();
@@ -40,6 +66,12 @@ namespace WindowsMqttPOS
             var token = handler.ReadJwtToken(jwt);
             var user = token.Claims.First(claim => claim.Type == "user_name").Value;
             return user;
+        }
+
+        public class TokenRequest
+        {
+            public string username { get; set; }
+            public string password { get; set; }
         }
 
         public class PaymentRequest

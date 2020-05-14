@@ -15,7 +15,7 @@ namespace WindowsMqttPOS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new formPayment());
+            Application.Run(new BaseForm());
         }
     }
 }
